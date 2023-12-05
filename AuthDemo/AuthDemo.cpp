@@ -11,6 +11,7 @@ HWND hSubmitButton, hResetButton, hRegisterButton;
 HWND hLoginField, hPasswordField;
 
 HWND hNameEdit, hSurnameEdit, hTelEdit, hLoginEdit, hPasswordEdit, hConfPasEdit;
+HWND hRoleEdit, hStatusEdit;
 HWND hRegistButton;
 
 
@@ -125,9 +126,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // 2 Після закриття вікна авторизації  обробляєм ії результат
         
             if (authResult == false) {
-                MessageBox(hWnd, L"Користувач не знайдений", L"Повідомлення",
+                MessageBox(hWnd, L"Користувач не знайдений, пройдіть авторизацію", L"Повідомлення",
                     MB_OK | MB_ICONERROR);
-                // DestroyWindow(hWnd);
+                //DestroyWindow(hWnd);
             }
             else {
                 MessageBox(hWnd, L"Ви авторизовані", L"Повідомлення",
@@ -145,6 +146,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         
 
         DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG2), hWnd, Regist);
+        
+        MessageBox(hWnd, L"Ви Зареєстровані", L"Повідомлення",
+            MB_OK | MB_ICONINFORMATION);
+        TCHAR buff[100];
+        lstrcpy(buff, L"Зареєстрований  Користувач - ");
+        lstrcat(buff, accountsRep->getUserName());
+        lstrcat(buff, L" ");
+        lstrcat(buff, accountsRep->getUserSurname());
+        lstrcat(buff, L" !");
+        SetWindowText(hWnd, buff);
+        break;
 
             }
 
@@ -285,16 +297,99 @@ INT_PTR CALLBACK Regist(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         hLoginEdit = GetDlgItem(hDlg, IDC_EDIT4);
         hPasswordEdit = GetDlgItem(hDlg, IDC_EDIT5);
         hConfPasEdit = GetDlgItem(hDlg, IDC_EDIT6);
+        hRoleEdit = GetDlgItem(hDlg, IDC_EDIT7);
+        hStatusEdit = GetDlgItem(hDlg, IDC_EDIT8);
         hRegistButton = GetDlgItem(hDlg, IDC_BUTTON1);
          }
         return (INT_PTR)TRUE;
 
-    case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+        case WM_COMMAND:
         {
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
-        }
+            int wmId = LOWORD(wParam);
+            if (wmId == IDC_BUTTON1)
+            {
+                TCHAR buff1[100];
+                GetWindowText(hNameEdit, buff1, 100);
+                if (lstrlen(buff1) == 0) {
+                    MessageBox(hDlg, L" Ви не ввели ім'я", L"Повідомлення",
+                        MB_OK | MB_ICONEXCLAMATION);
+                    SetFocus(hNameEdit);
+                }
+                else {
+                    TCHAR buff2[100];
+                    GetWindowText(hSurnameEdit, buff2, 100);
+                    if (lstrlen(buff2) == 0) {
+                        MessageBox(hDlg, L" Ви не ввели Призвище", L"Повідомлення",
+                            MB_OK | MB_ICONEXCLAMATION);
+                        SetFocus(hSurnameEdit);
+                    }
+                    else {
+                        TCHAR buff3[100];
+                        GetWindowText(hTelEdit, buff3, 100);
+                        if (lstrlen(buff3) == 0) {
+                            MessageBox(hDlg, L" Ви не ввели номер телефону", L"Повідомлення",
+                                MB_OK | MB_ICONEXCLAMATION);
+                            SetFocus(hTelEdit);
+                        }
+                        else {
+                            TCHAR buff4[100];
+                            GetWindowText(hLoginEdit, buff4, 100);
+                            if (lstrlen(buff4) == 0) {
+                                MessageBox(hDlg, L" Ви не ввели Login", L"Повідомлення",
+                                    MB_OK | MB_ICONEXCLAMATION);
+                                SetFocus(hLoginEdit);
+                            }
+                            else {
+                                TCHAR buff5[100];
+                                GetWindowText(hPasswordEdit, buff5, 100);
+                                if (lstrlen(buff5) == 0) {
+                                    MessageBox(hDlg, L" Ви не ввели Password", L"Повідомлення",
+                                        MB_OK | MB_ICONEXCLAMATION);
+                                    SetFocus(hPasswordEdit);
+                                }
+                                else {
+                                    TCHAR buff6[100];
+                                    GetWindowText(hConfPasEdit, buff6, 100);
+                                    if (lstrlen(buff6) == 0/* || buff5 != buff6*/) {
+                                        MessageBox(hDlg, L" Ви не підтвердили Password", L"Повідомлення",
+                                            MB_OK | MB_ICONEXCLAMATION);
+                                        SetFocus(hConfPasEdit);
+                                    }
+                                    else {
+                                        TCHAR buff7[100];
+                                        GetWindowText(hRoleEdit, buff7, 100);
+                                        if (lstrlen(buff7) == 0) {
+                                            MessageBox(hDlg, L" Ви не ввели Вашу роль", L"Повідомлення",
+                                                MB_OK | MB_ICONEXCLAMATION);
+                                            SetFocus(hRoleEdit);
+                                        }
+                                        else {
+                                            TCHAR buff8[100];
+                                            GetWindowText(hStatusEdit, buff8, 100);
+                                            if (lstrlen(buff8) == 0) {
+                                                MessageBox(hDlg, L" Ви не ввели Ваш статус", L"Повідомлення",
+                                                    MB_OK | MB_ICONEXCLAMATION);
+                                                SetFocus(hStatusEdit);
+                                            }
+                                            else {
+                                                accountsRep->registry(buff4, buff5, buff1, buff2, buff7, buff8);
+                                                EndDialog(hDlg, wmId);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        
+            else if (wmId == IDOK || wmId == IDCANCEL)
+            {
+                EndDialog(hDlg, LOWORD(wParam));
+                return (INT_PTR)TRUE;
+            }
+            }
         break;
     }
     return (INT_PTR)FALSE;

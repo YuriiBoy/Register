@@ -1,2 +1,3 @@
-﻿  AuthDemo.cpp
-  AuthDemo.vcxproj -> D:\step\cpp\VI\ООП\AuthDemo\x64\Debug\AuthDemo.exe
+﻿  AccountsRep.cpp
+D:\step\cpp\VI\ООП\Desktop\AuthDemo\AuthDemo\AccountsRep.cpp(70,7): warning C4101: 'buff': unreferenced local variable
+  AuthDemo.vcxproj -> D:\step\cpp\VI\ООП\Desktop\AuthDemo\x64\Debug\AuthDemo.exe

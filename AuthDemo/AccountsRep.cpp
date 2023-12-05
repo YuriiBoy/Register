@@ -61,9 +61,33 @@ bool AccountsRep::authCheck(TCHAR login[], TCHAR pasww[])
 	return (temp);
 }
 
-void AccountsRep::registry()
+void AccountsRep::registry(TCHAR login[], TCHAR pasww[], TCHAR name[],
+	TCHAR surname[], TCHAR role[], TCHAR status[])
 {
+
+	int id = 0;
+	TCHAR registry[100];
+	char buff;
+	std::ofstream fout;
+	fout.open("Accounts.txt", std::ios_base::app);
+	
+	fout << id;
+	//mbstowcs(null, login, 100, buff, 100);
+	fout << login << std::endl;
+	fout << pasww << std::endl;
+	fout << name << std::endl;
+	fout << surname << std::endl;
+	fout << "date" << std::endl;
+	fout << role << std::endl;
+	fout << status << std::endl;
+
+	Account a(id, login, pasww, name, surname, registry, role, status);
+	accounts.push_back(a);
+
+	fout.close();
+	
 }
+
 
 TCHAR* AccountsRep::getUserName()
 {
@@ -73,4 +97,31 @@ TCHAR* AccountsRep::getUserName()
 TCHAR* AccountsRep::getUserSurname()
 {
 	return userSurname;
+}
+
+TCHAR* AccountsRep::getUserTel()
+{
+	return userTel;
+}
+
+TCHAR* AccountsRep::getUserLog()
+{
+	return userLog;
+}
+
+TCHAR* AccountsRep::getUserPasw()
+{
+	return userPasw;
+}
+
+
+
+TCHAR* AccountsRep::getUserRole()
+{
+	return userRole;
+}
+
+TCHAR* AccountsRep::getUserStatus()
+{
+	return userStatus;
 }
